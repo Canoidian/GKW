@@ -6,15 +6,12 @@
 #    By: Kevin Nhan <kenha4996@ugcloud.ca>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/13 11:07:56 by williamisaa   #+#    #+#                  #
-#    Updated: 2023/12/13 11:17:48 by williamisaa   ########   odam.nl          #
+#    Updated: 2023/12/13 11:18:56 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 #? Libraries
 import pygame
-
-#! Functions
-
 
 #* Constants and Variables
 
