@@ -6,7 +6,7 @@
 #    By: Kevin Nhan <kenha4996@ugcloud.ca>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/13 11:07:56 by williamisaa   #+#    #+#                  #
-#    Updated: 2023/12/13 17:50:21 by williamisaa   ########   odam.nl          #
+#    Updated: 2023/12/14 09:08:33 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ from settings import *
 
 
 #* Constants and Variables
+
 
 #Colours
 BLACK = (0,0,0)
@@ -40,9 +41,11 @@ pygame.display.set_caption("12/25") # Name of game
 clock = pygame.time.Clock()
 
 # Load images - background ect
-background = pygame.transform.scale(pygame.image.load("").convert(), (WIDTH, HEIGHT)) # Input path to background file
+# background = pygame.transform.scale(pygame.image.load("").convert(), (WIDTH, HEIGHT)) # Input path to background file
 
-
+# #Draws a red rectangle at the coords (100,100) on the window
+pygame.draw.rect(screen, WHITE, [100,100,150,200])
+pygame.display.flip()
 
 
 
@@ -54,12 +57,7 @@ while True:
             pygame.quit()
             exit()
     
-    screen.blit(background, (0,0)) # To display background
+    #screen.blit(background, (0,0)) # To display background
     
     pygame.display.update()
     clock.tick(FPS)
-
-
-# #Draws a red rectangle at the coords (100,100) on the window
-# pygame.draw.rect(screen, WHITE, [100,100,150,200])
-# pygame.display.flip()
