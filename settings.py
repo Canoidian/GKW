@@ -3,7 +3,7 @@
 WIDTH = 1280
 HEIGHT = 1280
 
-FPS = 60
+FPS = 120
 
 #Character Settings
 

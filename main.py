@@ -6,7 +6,7 @@
 #    By: Kevin Nhan <kenha4996@ugcloud.ca>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/13 11:07:56 by williamisaa   #+#    #+#                  #
-#    Updated: 2023/12/18 10:47:30 by williamisaa   ########   odam.nl          #
+#    Updated: 2023/12/18 11:07:17 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,17 +40,34 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("12/25") # Name of game
 clock = pygame.time.Clock()
 
-class character(pygame.sprite.Sprite):
-    def __init__(self, speed, gifts, buffs, name, image, pos):
+class Player(pygame.sprite.Sprite):
+    def __init__(self, name, speed):
         super().__init__()
-        self.speed = speed
-        self.gifts = gifts
-        self.buffs = buffs
         self.name = name
-        self.image = pygame.image.load("").convert_alpha()
+        self.speed = speed
+        
         self.pos = pygame.math.Vector2(PLAYER_START_X, PLAYER_START_Y)
         
-#player = Player()
+        self.image = pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/player.png").convert_alpha())
+        self.rect = self.image.get_rect(center = self.pos)
+        
+        self.inv = []
+        
+    def changeSpeed(self, value):
+        self.speed = value
+    
+    def move(self, value, direction):
+        if direction == "x":
+            self.rect.centerx += value
+        
+        
+    
+        
+# Initializing the player
+character = Player("Gabriel", 3)
+
+SpriteGroup = pygame.sprite.GroupSingle()
+SpriteGroup.add(character)
 
 # Load images - background ect
 background = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Background/Background.jpg").convert(), (WIDTH, HEIGHT)) # Input path to background file
@@ -68,12 +85,15 @@ while True:
             pygame.quit()
             exit()
     
-    # Detects when user holds W key
-    if keys[pygame.K_w]:
-        print("Holding W key")
+    # Detects when user holds A key
+    if keys[pygame.K_a]:
+        character.move(3, "x")
+    # Detects when user holds D key
+    if keys[pygame.K_d]:
+        character.move(-3, "x")
     
     screen.blit(background, (0,0)) # To display background
-    #screen.blit(player.image, player.pos)
+    SpriteGroup.draw(screen)
     
-    pygame.display.update()
+    pygame.display.flip()
     clock.tick(FPS)
