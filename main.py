@@ -6,7 +6,7 @@
 #    By: Kevin Nhan <kenha4996@ugcloud.ca>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/13 11:07:56 by williamisaa   #+#    #+#                  #
-#    Updated: 2023/12/18 14:59:28 by williamisaa   ########   odam.nl          #
+#    Updated: 2023/12/19 11:33:46 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ from pygame.sprite import AbstractGroup
 
 from functions import *
 from settings import *
+from classes import *
 
 
 #* Constants and Variables
@@ -43,64 +44,36 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("12/25") # Name of game
 clock = pygame.time.Clock()
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, name, speed):
-        super().__init__()
-        self.name = name
-        self.speed = speed
-        
-        self.pos = pygame.math.Vector2(PLAYER_START_X, PLAYER_START_Y)
-        
-        self.image = pygame.transform.scale2x(pygame.image.load(image).convert_alpha()) # Base image
-        self.rect = self.image.get_rect(center = self.pos) #Creates rectangle / hitbox around the image
-        
-        self.inv = []
-        
-        self.index = 0
-        self.walkingAnimation = [pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/player.png").convert_alpha()),
-                                pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/playerWalk2x.png").convert_alpha())]
-        
-    def changeSpeed(self, value):
-        self.speed = value
-    
-    def move(self, value, direction):
-        if direction == "x":
-            self.rect.centerx += value
-        else:
-            self.rect.centery += value
-            
-    def animate(self, animType, increment):
-        if animType == "Walk":
-            if self.index >= len(self.walkingAnimation):
-                self.index = 0
-            else:
-                self.image = self.walkingAnimation[int(self.index)]
-                self.index += increment
-    
-class Camera(pygame.sprite.Group):
-    def __init__(self):
-        super().__init__()
-        self.offset = pygame.math.Vector2()
-        
-    def custom_draw(self):
-        self.offset.x = character.rect.centerx - WIDTH // 2
-        self.offset.y = character.rect.centery - HEIGHT // 2
-        
-        
-            
-    
-        
 # Initializing the player
-character = Player(name, speed)
+player = Player(name, speed)
 
 SpriteGroup = pygame.sprite.GroupSingle()
-SpriteGroup.add(character)
+SpriteGroup.add(player)
 
 # Load images - background
 background = pygame.transform.scale(pygame.image.load(backgroundImg).convert(), (WIDTH, HEIGHT)) 
 
-# #Draws a red rectangle at the coords (100,100) on the window
-#pygame.draw.rect(screen, WHITE, [100,100,150,200])
+class Camera(pygame.sprite.Group):
+    def __init__(self, player, sprite_group):
+        super().__init__()
+        self.player = player
+        self.sprite_group = sprite_group
+        self.offset = pygame.math.Vector2()
+        self.floor_rect = background.get_rect(topleft = (0, 0))
+
+    def custom_draw(self):
+        self.offset.x = self.player.rect.centerx - WIDTH // 2
+        self.offset.y = self.player.rect.centery - HEIGHT // 2
+
+        # draw the floor
+        floor_offset_pos = self.floor_rect.topleft - self.offset
+        screen.blit(background, floor_offset_pos)
+
+        for sprite in self.sprite_group:
+            offset_pos = sprite.rect.topleft - self.offset
+            screen.blit(sprite.image, offset_pos)
+
+camera = Camera(player, SpriteGroup)
 
 while True:
     keys = pygame.key.get_pressed() # Looks at all keys pressed
@@ -112,24 +85,20 @@ while True:
     
     # Detects when user holds A key
     if keys[pygame.K_a]:
-        character.move(-1*character.speed, "x")
-        character.animate("Walking", 0.1)
+        player.move(-1*player.speed, "x")
     # Detects when user holds D key
     if keys[pygame.K_d]:
-        character.move(character.speed, "x")
-        character.animate("Walking", 0.1)
+        player.move(player.speed, "x")
 
     # Detects when user holds W key
     if keys[pygame.K_w]:
-        character.move(-1*character.speed, "y")
-        character.animate("Walking", 0.1)
+        player.move(-1*player.speed, "y")
     # Detects when user holds S key
     if keys[pygame.K_s]:
-        character.move(character.speed, "y")
-        character.animate("Walking", 0.1)
+        player.move(player.speed, "y")
     
-    screen.blit(background, (0,0)) # To display background
-    SpriteGroup.draw(screen)
+    #screen.blit(background, (0,0)) # To display background
+    camera.custom_draw()
     
     pygame.display.flip()
     clock.tick(FPS)
