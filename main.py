@@ -20,6 +20,7 @@ from sys import exit
 from functions import *
 from settings import *
 from classes import *
+from menu import *
 
 
 #* Constants and Variables
@@ -55,6 +56,7 @@ player = Player(name, speed)
 # Presents
 presentGroup = pygame.sprite.Group()
 
+# Draws presents on screen (TEMP)
 for i in range(1500):
     presentNames = ["small_present","medium_present","large_present", "golden_present"]
     rndPresent = random.randint(0,3)
@@ -65,8 +67,9 @@ for i in range(1500):
 # Load images - background
 background = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Background/Background.png").convert_alpha(), (WIDTH, HEIGHT)) 
 
+#Camera
 class Camera(pygame.sprite.Group):
-    def __init__(self):
+    def __init__(self):     
         super().__init__()
         self.display_surface = pygame.display.get_surface()
         
@@ -94,12 +97,15 @@ class Camera(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)
+        
 
+# Adds player and present sprites into the came
 cameraGroup = Camera()
 cameraGroup.add(player)
 cameraGroup.add(presentGroup)
 
-def draw_start_menu():
+#Start Menu
+def draw_start_menu(screen):
     screen.fill((0, 0, 0))
     font = pygame.font.SysFont('/Users/williamisaak/Code/GKW/Asset/Fonts/Pixeltype.ttf', 40)
     title = font.render('My Game', True, (255, 255, 255))
@@ -107,6 +113,7 @@ def draw_start_menu():
     screen.blit(title, (WIDTH/2 - title.get_width()/2, HEIGHT/2 - title.get_height()/2))
     screen.blit(start_button, (WIDTH/2 - start_button.get_width()/2, HEIGHT/2 + start_button.get_height()/2))
     pygame.display.update()
+    
 
 while True:
     keys = pygame.key.get_pressed() # Looks at all keys pressed
@@ -116,26 +123,25 @@ while True:
             pygame.quit()
             exit()
         
-    if game_state == "start_menu":
-        draw_start_menu()
+    if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
+        draw_start_menu(screen)
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE]: # When spacebar is pressed
             player_x = 200
             player_y = 400
             game_state = "game"
             game_over = False
   
-    if game_state == "game":
+    if game_state == "game": # When spacebar is pressed in the start menu, it will change the game state and start the game
         keys = pygame.key.get_pressed()
        
         # Fill the screen with black color
         screen.fill(BLACK)
         
-        #screen.blit(background, (0,0)) # To display background
         cameraGroup.update()
         cameraGroup.custom_draw(player)
 
-        player.update()
+        player.update() #Updates screen to display player
         screen.blit(textFont.render(f"Points: {player.points}", False, RED), textRect)
 
         #Detects when present is touched
