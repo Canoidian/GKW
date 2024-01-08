@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2023/12/21 11:27:59 by williamisaa   ########   odam.nl          #
+#    Updated: 2023/12/21 14:29:30 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,8 +77,13 @@ class Player(pygame.sprite.Sprite):
         
         self.inv = []
         
-        self.walkingSprites = Animation([pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/player.png").convert_alpha()),
-                                pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/playerWalk2x.png").convert_alpha())])
+        # self.walkingSprites = Animation([pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/player.png").convert_alpha()),
+        #                         pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/playerWalk2x.png").convert_alpha())])
+        
+        # Santa walk
+        self.walkingSprites = Animation([pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/SantaRun1.png").convert_alpha()),
+                                pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/SantaRun2.png").convert_alpha()),
+                                pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/SantaRun3.png").convert_alpha())])
         
     def changeSpeed(self, value):
         self.speed = value
