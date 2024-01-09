@@ -61,7 +61,7 @@ clock = pygame.time.Clock()
 
 #Texts
 textFont = pygame.font.Font("/Users/williamisaak/Code/GKW/Asset/Fonts/Pixeltype.ttf", 50)
-text = textFont.render("Points: ", False, LIGHT_BLUE)
+text = textFont.render("Points: ", False, CHRISTMAS_GREEN)
 textRect = text.get_rect(center = (100,50))
 
 # Initializing the player
@@ -137,7 +137,7 @@ while True:
         cameraGroup.custom_draw(player)
 
         player.update() #Updates screen to display player
-        screen.blit(textFont.render(f"Points: {player.points}", False, RED), textRect)
+        screen.blit(textFont.render(f"Points: {player.points}", False, CHRISTMAS_GREEN), textRect)
 
         #Detects when present is touched
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
