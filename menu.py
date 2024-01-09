@@ -34,9 +34,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
                     selected = "quit"
                 if event.key == pygame.K_RETURN:
                     if selected == "start":
-                        
-                        game_state = "game"
-                        print(game_state)
+                        return "game"
                     if selected == "quit":
                         pygame.quit()
                         quit()

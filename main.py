@@ -127,8 +127,7 @@ while True:
             exit()
         
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
-        main_menu(screen, font, WIDTH, clock, game_state)
-  
+        game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
     if game_state == "game":
        
         # Fill the screen with black color
