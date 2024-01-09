@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:36:53 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/08 10:59:53 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/09 10:37:48 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@ WIDTH = 1280
 HEIGHT = 1280
 
 FPS = 60
-
 
 # Character Settings
 

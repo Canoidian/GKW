@@ -15,6 +15,7 @@
 # https://www.youtube.com/watch?v=abH2MSBdnWc
 #? Libraries
 import pygame, math, random
+
 from sys import exit
 
 from functions import *
@@ -28,11 +29,24 @@ from menu import *
 #Colours
 BLACK = (0,0,0)
 WHITE = (255,255,255)
+GRAY = (128,128,128)
 GREEN = (0,255,0)
+CHRISTMAS_GREEN = (60,141,13)
+TEAL = (0,128,128)
+BROWN = (100,65,23)
 RED = (255,0,0)
+CHRISTMAS_RED = (214,0,28)
+ORANGE = (255,79,0)
+YELLOW = (255,240,0)
+PINK = (255,105,180)
+BLUE = (100,149,237)
 LIGHT_BLUE = (173, 216, 230, 1)
+PURPLE = (102,51,153)
+
 
 game_state = "start_menu"
+
+font = "/Users/williamisaak/Code/GKW/Asset/Fonts/Pixeltype.ttf"
 
 #^ Main
 done = False
@@ -104,17 +118,6 @@ cameraGroup = Camera()
 cameraGroup.add(player)
 cameraGroup.add(presentGroup)
 
-#Start Menu
-def draw_start_menu(screen):
-    screen.fill((0, 0, 0))
-    font = pygame.font.SysFont('/Users/williamisaak/Code/GKW/Asset/Fonts/Pixeltype.ttf', 40)
-    title = font.render('My Game', True, (255, 255, 255))
-    start_button = font.render('Start', True, (255, 255, 255))
-    screen.blit(title, (WIDTH/2 - title.get_width()/2, HEIGHT/2 - title.get_height()/2))
-    screen.blit(start_button, (WIDTH/2 - start_button.get_width()/2, HEIGHT/2 + start_button.get_height()/2))
-    pygame.display.update()
-    
-
 while True:
     keys = pygame.key.get_pressed() # Looks at all keys pressed
     
@@ -124,16 +127,9 @@ while True:
             exit()
         
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
-        draw_start_menu(screen)
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]: # When spacebar is pressed
-            player_x = 200
-            player_y = 400
-            game_state = "game"
-            game_over = False
+        main_menu(screen, font, WIDTH, clock, game_state)
   
-    if game_state == "game": # When spacebar is pressed in the start menu, it will change the game state and start the game
-        keys = pygame.key.get_pressed()
+    if game_state == "game":
        
         # Fill the screen with black color
         screen.fill(BLACK)
