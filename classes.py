@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/08 10:45:57 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/10 11:16:00 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,6 +92,8 @@ class Player(pygame.sprite.Sprite):
         self.points = present.getValue()
 
     def update(self):
+        counter = 0
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             self.rect.centery -= self.speed
@@ -105,3 +107,11 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_d]:
             self.rect.centerx += self.speed
             self.walkingSprites.animate(0.07, self)
+
+class block(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.pos = pos # Default position
+
+        self.image = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/RedTile.png").convert_alpha(), (50,50))
+        self.rect = self.image.get_rect(center = self.pos)

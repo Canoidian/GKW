@@ -62,9 +62,9 @@ def main_menu(screen, font, WIDTH, clock, game_state):
         quit_rect = text_quit.get_rect()
  
         # Main Menu Text
-        screen.blit(title, (WIDTH/2 - (title_rect[2]/2), 80))
-        screen.blit(text_start, (WIDTH/2 - (start_rect[2]/2), 300))
-        screen.blit(text_quit, (WIDTH/2 - (quit_rect[2]/2), 360))
+        screen.blit(title, (WIDTH/2 - (title_rect[2]/2), 60))
+        screen.blit(text_start, (WIDTH/2 - (start_rect[2]/2), 260))
+        screen.blit(text_quit, (WIDTH/2 - (quit_rect[2]/2), 320))
         pygame.display.update()
         clock.tick(FPS)
         pygame.display.set_caption("12/25 - Game Menu")

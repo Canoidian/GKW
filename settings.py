@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:36:53 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/09 10:37:48 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/10 11:26:11 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,8 @@ FPS = 60
 
 # Character Settings
 
-PLAYER_START_X = 400
-PLAYER_START_Y = 500
+PLAYER_START_X = 100
+PLAYER_START_Y = 100
 
 speed = 3 # Default speed
 name = "Will I am" # Default name

@@ -22,6 +22,7 @@ from functions import *
 from settings import *
 from classes import *
 from menu import *
+from tileMap import *
 
 
 #* Constants and Variables
@@ -71,7 +72,7 @@ player = Player(name, speed)
 presentGroup = pygame.sprite.Group()
 
 # Draws presents on screen (TEMP)
-for i in range(1500):
+for i in range(100):
     presentNames = ["small_present","medium_present","large_present", "golden_present"]
     rndPresent = random.randint(0,3)
     present = Present(presentNames[rndPresent]+"_"+str(rndPresent))
@@ -113,10 +114,25 @@ class Camera(pygame.sprite.Group):
             self.display_surface.blit(sprite.image, offset_pos)
         
 
-# Adds player and present sprites into the came
+# Adds player and present sprites into the camera group
 cameraGroup = Camera()
 cameraGroup.add(player)
 cameraGroup.add(presentGroup)
+
+# Tilemap
+defaultSize = 51
+blockGroup = pygame.sprite.Group()
+
+y = 0
+for row in tileMap:
+    x = 0
+    for col in row:
+        if col == "W":
+            blockGroup.add(block((x,y)))
+        x += defaultSize
+    y += defaultSize
+
+cameraGroup.add(blockGroup)
 
 while True:
     keys = pygame.key.get_pressed() # Looks at all keys pressed
@@ -128,6 +144,7 @@ while True:
         
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
+        
     if game_state == "game":
        
         # Fill the screen with black color
@@ -141,8 +158,21 @@ while True:
 
         #Detects when present is touched
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
+        blockCollision = pygame.sprite.spritecollide(player, blockGroup, False)
+        
         for present in presentCollision:
             player.points += present.getValue()
         
+        for blockTile in blockCollision:
+            if blockTile.pos[0] - player.rect.centerx < 1:
+                player.rect.centerx += 4
+            else:
+                player.rect.centerx -= 4
+                    
+            if blockTile.pos[1] - player.rect.centery < 1:
+                player.rect.centery += 4
+            else:
+                player.rect.centery -= 4
+
         pygame.display.flip()
         clock.tick(FPS)
