@@ -40,4 +40,4 @@ tileMap = ["WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
            ]
 
 for row in tileMap:
-    print(len)
+    print(len(row))
