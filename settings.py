@@ -6,15 +6,15 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:36:53 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/10 11:26:11 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/11 11:34:53 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 
 # Game setup
 
-WIDTH = 1280
-HEIGHT = 1280
+WIDTH = 750
+HEIGHT = 750
 
 FPS = 60
 

@@ -22,7 +22,7 @@ from functions import *
 from settings import *
 from classes import *
 from menu import *
-from tileMap import *
+from map import *
 
 
 #* Constants and Variables
@@ -62,22 +62,18 @@ clock = pygame.time.Clock()
 
 #Texts
 textFont = pygame.font.Font("/Users/williamisaak/Code/GKW/Asset/Fonts/Pixeltype.ttf", 50)
-text = textFont.render("Points: ", False, CHRISTMAS_GREEN)
-textRect = text.get_rect(center = (100,50))
+
+pointText = textFont.render("Points: ", False, CHRISTMAS_GREEN)
+pointsRect = pointText.get_rect(center = (100,50))
+
+presentText = textFont.render("Presents Collected: ", False, CHRISTMAS_RED)
+presentsRect = pointText.get_rect(center = (100,100))
 
 # Initializing the player
 player = Player(name, speed)
 
 # Presents
 presentGroup = pygame.sprite.Group()
-
-# Draws presents on screen (TEMP)
-for i in range(100):
-    presentNames = ["small_present","medium_present","large_present", "golden_present"]
-    rndPresent = random.randint(0,3)
-    present = Present(presentNames[rndPresent]+"_"+str(rndPresent))
-    present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/"+presentNames[rndPresent]+".png",(random.randint(400, 1500),random.randint(400,1500) + 100))
-    presentGroup.add(present)
 
 # Load images - background
 background = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Background/Background.png").convert_alpha(), (WIDTH, HEIGHT)) 
@@ -117,22 +113,34 @@ class Camera(pygame.sprite.Group):
 # Adds player and present sprites into the camera group
 cameraGroup = Camera()
 cameraGroup.add(player)
-cameraGroup.add(presentGroup)
 
 # Tilemap
 defaultSize = 51
 blockGroup = pygame.sprite.Group()
 
 y = 0
+presentNames = ["small_present","medium_present","large_present", "golden_present"]
+
 for row in tileMap:
     x = 0
     for col in row:
         if col == "W":
             blockGroup.add(block((x,y)))
+        elif col == "P":
+            rndPresent = random.randint(0,2)
+            present = Present(presentNames[rndPresent]+"_"+str(rndPresent))
+            present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/"+presentNames[rndPresent]+".png",(x,y))
+            presentGroup.add(present)
+        elif col == "G":
+            present = Present("golden_present_3")
+            present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/golden_present.png",(x,y))
+            presentGroup.add(present)
+
         x += defaultSize
     y += defaultSize
 
 cameraGroup.add(blockGroup)
+cameraGroup.add(presentGroup)
 
 while True:
     keys = pygame.key.get_pressed() # Looks at all keys pressed
@@ -145,6 +153,15 @@ while True:
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
         
+    if game_state == "pause":
+        continue
+    
+    if game_state == "game_finished":
+        continue
+    
+    if game_state == "help":
+        continue
+        
     if game_state == "game":
        
         # Fill the screen with black color
@@ -154,16 +171,24 @@ while True:
         cameraGroup.custom_draw(player)
 
         player.update() #Updates screen to display player
-        screen.blit(textFont.render(f"Points: {player.points}", False, CHRISTMAS_GREEN), textRect)
+        
+        # Displays points
+        screen.blit(textFont.render(f"Points: {player.points}", False, CHRISTMAS_GREEN), pointsRect)
 
-        #Detects when present is touched
+        # Displays presents collected
+        screen.blit(textFont.render(f"Presents Collected: {player.amtOfPresents}", False, CHRISTMAS_RED), presentsRect)
+
+        # Detects when present is touched
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
-        blockCollision = pygame.sprite.spritecollide(player, blockGroup, False)
         
         for present in presentCollision:
             player.points += present.getValue()
+            player.amtOfPresents += 1
         
-        for blockTile in blockCollision:
+        # Detects when the character hits a block
+        blockCollision = pygame.sprite.spritecollide(player, blockGroup, False)
+
+        for blockTile in blockCollision: # This will push the player away from the block, which will mimic wall collision 
             if blockTile.pos[0] - player.rect.centerx < 1:
                 player.rect.centerx += 4
             else:

@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/10 11:16:00 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/11 11:32:23 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ class Present(pygame.sprite.Sprite):
         if self.name[-1].isnumeric():
             if int(self.name[-1]) <= len(presentValues)-1:     
                 self.value = presentValues[int(self.name[-1])]
-                print("\nIdentifier found! Returning present value...")
+                #print("\nIdentifier found! Returning present value...")
                 return self.value
         
         print("\nCould not find the identifier at the end! Returning default value...")
@@ -69,6 +69,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = speed
 
         self.points = 0
+        self.amtOfPresents = 0
         
         self.pos = pygame.math.Vector2(PLAYER_START_X, PLAYER_START_Y)
         
@@ -87,13 +88,8 @@ class Player(pygame.sprite.Sprite):
         
     def changeSpeed(self, value):
         self.speed = value
-        
-    def addPresent(self, present):
-        self.points = present.getValue()
 
     def update(self):
-        counter = 0
-
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             self.rect.centery -= self.speed
@@ -115,3 +111,5 @@ class block(pygame.sprite.Sprite):
 
         self.image = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/RedTile.png").convert_alpha(), (50,50))
         self.rect = self.image.get_rect(center = self.pos)
+
+
