@@ -76,8 +76,6 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/player.png").convert_alpha()) # Base image
         self.rect = self.image.get_rect(center = self.pos).inflate(-20, -20) #Creates smaller rectangle / hitbox around the image
         
-        self.inv = []
-        
         self.walkingSprites = Animation([pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/player.png").convert_alpha()),
                                 pygame.transform.scale2x(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Character/playerWalk2x.png").convert_alpha())])
         
