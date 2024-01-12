@@ -75,7 +75,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
             text_help = text_format("HELP", font, 75, BLACK)
             
         if selected == "quit":
-            text_quit=text_format("QUIT", font, 75, WHITE)
+            text_quit = text_format("QUIT", font, 75, WHITE)
         else:
             text_quit = text_format("QUIT", font, 75, BLACK)
         
