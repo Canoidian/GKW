@@ -63,24 +63,21 @@ def main_menu(screen, font, WIDTH, clock, game_state):
         
         title = text_format("12/25", font, 90, CHRISTMAS_RED)
         
-        # When you select any of the options in the start menu, it will change the text colour white or black
+        # When you select any of the options in the start menu, it will change the text colour to white or black
         if selected == "start":
             text_start = text_format("START", font, 75, WHITE)
+        else:
+            text_start = text_format("START", font, 75, BLACK)
             
-            text_help = text_format("HELP", font, 75, BLACK)
-            text_quit = text_format("QUIT", font, 75, BLACK)
-            
-        elif selected == "help":
+        if selected == "help":
             text_help = text_format("HELP", font, 75, WHITE)
-            
-            text_start = text_format("START", font, 75, BLACK)
-            text_quit = text_format("HELP", font, 75, BLACK)
-            
-        elif selected == "quit":
-            text_quit = text_format("QUIT", font, 75, WHITE)
-            
-            text_start = text_format("START", font, 75, BLACK)
+        else:
             text_help = text_format("HELP", font, 75, BLACK)
+            
+        if selected == "quit":
+            text_quit=text_format("QUIT", font, 75, WHITE)
+        else:
+            text_quit = text_format("QUIT", font, 75, BLACK)
         
         title_rect = title.get_rect()
         start_rect = text_start.get_rect()
