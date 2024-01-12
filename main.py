@@ -120,6 +120,7 @@ blockGroup = pygame.sprite.Group()
 
 y = 0
 presentNames = ["small_present","medium_present","large_present", "golden_present"]
+totalPresents = 0
 
 for row in tileMap:
     x = 0
@@ -131,10 +132,12 @@ for row in tileMap:
             present = Present(presentNames[rndPresent]+"_"+str(rndPresent))
             present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/"+presentNames[rndPresent]+".png",(x,y))
             presentGroup.add(present)
+            totalPresents += 1
         elif col == "G":
             present = Present("golden_present_3")
             present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/golden_present.png",(x,y))
             presentGroup.add(present)
+            totalPresents += 1
 
         x += defaultSize
     y += defaultSize
