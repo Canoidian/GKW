@@ -21,7 +21,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
     WHITE = (255,255,255)
     
     index = 0
-    states = ["start, help, quit"]
+    states = ["start","help","quit"]
     selected = "start"
 
     while game_state == "start_menu":
@@ -29,16 +29,18 @@ def main_menu(screen, font, WIDTH, clock, game_state):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+                
+            # Loops through the states in the list
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     index -= 1
-                    if index < 0:
+                    if index < 0: # Checks if index is less than 0
                         index = 2
                     selected = states[index]
                     
                 elif event.key == pygame.K_DOWN:
                     index += 1
-                    if index > 2:
+                    if index > len(states) - 1: # Checks if index is greater than the list size
                         index = 0
                     selected = states[index]
                     
@@ -61,18 +63,24 @@ def main_menu(screen, font, WIDTH, clock, game_state):
         
         title = text_format("12/25", font, 90, CHRISTMAS_RED)
         
+        # When you select any of the options in the start menu, it will change the text colour white or black
         if selected == "start":
             text_start = text_format("START", font, 75, WHITE)
-        else:
-            text_start = text_format("START", font, 75, BLACK)
-        if selected == "help":
-            text_help = text_format("HELP", font, 75, WHITE)
-        else:
+            
             text_help = text_format("HELP", font, 75, BLACK)
-        if selected=="quit":
-            text_quit=text_format("QUIT", font, 75, WHITE)
-        else:
             text_quit = text_format("QUIT", font, 75, BLACK)
+            
+        elif selected == "help":
+            text_help = text_format("HELP", font, 75, WHITE)
+            
+            text_start = text_format("START", font, 75, BLACK)
+            text_quit = text_format("HELP", font, 75, BLACK)
+            
+        elif selected == "quit":
+            text_quit = text_format("QUIT", font, 75, WHITE)
+            
+            text_start = text_format("START", font, 75, BLACK)
+            text_help = text_format("HELP", font, 75, BLACK)
         
         title_rect = title.get_rect()
         start_rect = text_start.get_rect()
