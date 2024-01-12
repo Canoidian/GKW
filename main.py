@@ -51,7 +51,7 @@ font = "/Users/williamisaak/Code/GKW/Asset/Fonts/Pixeltype.ttf"
 
 #^ Main
 done = False
- 
+
 pygame.init() #Initializes the window
 pygame.font.init()
 
@@ -71,9 +71,6 @@ presentsRect = pointText.get_rect(center = (100,100))
 
 # Initializing the player
 player = Player(name, speed)
-
-# Presents
-presentGroup = pygame.sprite.Group()
 
 # Load images - background
 background = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Background/Background.png").convert_alpha(), (WIDTH, HEIGHT)) 
@@ -110,13 +107,13 @@ class Camera(pygame.sprite.Group):
             self.display_surface.blit(sprite.image, offset_pos)
         
 
-# Adds player and present sprites into the camera group
+# Initializing groups
 cameraGroup = Camera()
-cameraGroup.add(player)
+presentGroup = pygame.sprite.Group()
+blockGroup = pygame.sprite.Group()
 
 # Tilemap
 defaultSize = 151
-blockGroup = pygame.sprite.Group()
 
 y = 0
 presentNames = ["small_present","medium_present","large_present", "golden_present"]
@@ -125,8 +122,11 @@ totalPresents = 0
 for row in tileMap:
     x = 0
     for col in row:
+        # Adds in the walls
         if col == "W":
             blockGroup.add(block((x,y)))
+            
+        # Adds in the presents
         elif col == "P":
             rndPresent = random.randint(0,2)
             present = Present(presentNames[rndPresent]+"_"+str(rndPresent))
@@ -142,6 +142,7 @@ for row in tileMap:
         x += defaultSize
     y += defaultSize
 
+cameraGroup.add(player)
 cameraGroup.add(blockGroup)
 cameraGroup.add(presentGroup)
 
@@ -153,6 +154,7 @@ while True:
             pygame.quit()
             exit()
         
+    # All game states
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
         
@@ -165,8 +167,8 @@ while True:
     if game_state == "help":
         continue
         
+    # The main game state that runs the game
     if game_state == "game":
-       
         # Fill the screen with black color
         screen.fill(BLACK)
         
@@ -179,7 +181,7 @@ while True:
         screen.blit(textFont.render(f"Points: {player.points}", False, CHRISTMAS_GREEN), pointsRect)
 
         # Displays presents collected
-        screen.blit(textFont.render(f"Presents Collected: {player.amtOfPresents}", False, CHRISTMAS_RED), presentsRect)
+        screen.blit(textFont.render(f"Presents Collected: {player.amtOfPresents}/{totalPresents}", False, CHRISTMAS_RED), presentsRect)
 
         # Detects when present is touched
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)

@@ -11,7 +11,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
     def text_format(message, textFont, textSize, textColor):
         newFont = pygame.font.Font(textFont, textSize)
         newText = newFont.render(message, 0, textColor)
- 
+
         return newText
     
     #Colours
@@ -33,11 +33,13 @@ def main_menu(screen, font, WIDTH, clock, game_state):
                 if event.key == pygame.K_UP:
                     index -= 1
                     if index < 0:
-                        index = 0
-                        
+                        index = 2
                     selected = states[index]
+                    
                 elif event.key == pygame.K_DOWN:
                     index += 1
+                    if index > 2:
+                        index = 0
                     selected = states[index]
                     
                 if event.key == pygame.K_RETURN:
@@ -76,7 +78,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
         start_rect = text_start.get_rect()
         help_rect = text_help.get_rect()
         quit_rect = text_quit.get_rect()
- 
+
         # Main Menu Text
         screen.blit(title, (WIDTH/2 - (title_rect[2]/2), 60))
         screen.blit(text_start, (WIDTH/2 - (start_rect[2]/2), 260))
