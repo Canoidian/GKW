@@ -191,12 +191,12 @@ while True:
         blockCollision = pygame.sprite.spritecollide(player, blockGroup, False)
 
         for blockTile in blockCollision: # This will push the player away from the block, which will mimic wall collision 
-            if blockTile.pos[0] - player.rect.centerx < 3:
+            if blockTile.pos[0] - player.rect.centerx < 3: # On the X-axis
                 player.rect.centerx += 6
             else:
                 player.rect.centerx -= 6
                     
-            if blockTile.pos[1] - player.rect.centery < 3:
+            if blockTile.pos[1] - player.rect.centery < 3: # On the Y-axis
                 player.rect.centery += 6
             else:
                 player.rect.centery -= 6
