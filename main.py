@@ -195,14 +195,14 @@ while True:
 
         for blockTile in blockCollision: # This will push the player away from the block, which will mimic wall collision 
             if blockTile.pos[0] - player.rect.centerx < 1:
-                player.rect.centerx += 4
+                player.rect.centerx += 8
             else:
-                player.rect.centerx -= 4
+                player.rect.centerx -= 8
                     
             if blockTile.pos[1] - player.rect.centery < 1:
-                player.rect.centery += 4
+                player.rect.centery += 8
             else:
-                player.rect.centery -= 4
+                player.rect.centery -= 8
 
         pygame.display.flip()
         clock.tick(FPS)
