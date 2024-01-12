@@ -115,7 +115,7 @@ cameraGroup = Camera()
 cameraGroup.add(player)
 
 # Tilemap
-defaultSize = 51
+defaultSize = 151
 blockGroup = pygame.sprite.Group()
 
 y = 0

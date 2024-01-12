@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    Classes.py                                         :+:    :+:             #
+#    classes.py                                         :+:    :+:             #
 #                                                      +:+                     #
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/11 11:32:23 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/12 10:40:03 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,7 +109,7 @@ class block(pygame.sprite.Sprite):
         super().__init__()
         self.pos = pos # Default position
 
-        self.image = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/RedTile.png").convert_alpha(), (50,50))
+        self.image = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/RedTile.png").convert_alpha(), (150,150))
         self.rect = self.image.get_rect(center = self.pos)
 
 
