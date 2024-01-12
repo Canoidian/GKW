@@ -177,32 +177,30 @@ while True:
 
         player.update() #Updates screen to display player
         
-        # Displays points
+        # Displays points and presents collected
         screen.blit(textFont.render(f"Points: {player.points}", False, CHRISTMAS_GREEN), pointsRect)
-
-        # Displays presents collected
         screen.blit(textFont.render(f"Presents Collected: {player.amtOfPresents}/{totalPresents}", False, CHRISTMAS_RED), presentsRect)
 
-        # Detects when present is touched
+        # Collisions
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
         
         for present in presentCollision:
             player.points += present.getValue()
             player.amtOfPresents += 1
         
-        # Detects when the character hits a block
         blockCollision = pygame.sprite.spritecollide(player, blockGroup, False)
 
         for blockTile in blockCollision: # This will push the player away from the block, which will mimic wall collision 
             if blockTile.pos[0] - player.rect.centerx < 1:
-                player.rect.centerx += 8
+                player.rect.centerx += 6
             else:
-                player.rect.centerx -= 8
+                player.rect.centerx -= 6
                     
             if blockTile.pos[1] - player.rect.centery < 1:
-                player.rect.centery += 8
+                player.rect.centery += 6
             else:
-                player.rect.centery -= 8
+                player.rect.centery -= 6
 
+        # Updates screen
         pygame.display.flip()
         clock.tick(FPS)
