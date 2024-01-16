@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:36:53 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/15 11:21:57 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/16 11:32:48 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ name = "Will I am" # Default name
 defaultInvSize = 5
 
 # Present Settings
-presentValues = [30,50,100,10000]
+presentValues = [30,50,100,500]
 
 # Game Settings
 timer = 120 # in seconds

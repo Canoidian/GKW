@@ -123,7 +123,7 @@ def help_menu(screen, font, WIDTH, clock, game_state):
     states = ["back"]
     selected = "back"
 
-    while game_state == "help_menu":  # Changed from "help" to "help_menu"
+    while game_state == "help_menu":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -168,3 +168,84 @@ def help_menu(screen, font, WIDTH, clock, game_state):
         pygame.display.update()
         clock.tick(FPS)
         pygame.display.set_caption("12/25 - Help Menu")
+        
+def pause(screen, font, WIDTH, clock, game_state):
+     # Text Renderer
+    def text_format(message, textFont, textSize, textColor):
+        newFont = pygame.font.Font(textFont, textSize)
+        newText = newFont.render(message, 0, textColor)
+
+        return newText
+        
+    #Colours
+    DARK_CHRISTMAS_GREEN = (0,110,51)
+    CHRISTMAS_RED = (214,0,28)
+    BLACK = (0,0,0)
+    WHITE = (255,255,255)
+    
+    index = 0
+    states = ["resume", "home", "quit"]
+    selected = "resume"
+    
+    while game_state == "start_menu":
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                    
+            # Loops through the states in the list
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    index -= 1
+                    if index < 0: # Checks if index is less than 0
+                        index = 2
+                    selected = states[index]
+                        
+                elif event.key == pygame.K_DOWN:
+                    index += 1
+                    if index > len(states) - 1: # Checks if index is greater than the list size
+                        index = 0
+                    selected = states[index]
+                        
+                if event.key == pygame.K_RETURN:
+                    if selected == "resume":
+                        return "game"
+                    if selected == "home":
+                        return "main_menu" 
+                    if selected == "quit":
+                        pygame.quit()
+                        quit()
+                        
+        screen.fill(BLACK)
+        
+        text_resume = text_format("RESUME", font, 75, BLACK)
+        text_home = text_format("HOME", font, 75, BLACK)
+        text_quit = text_format("QUIT", font, 75, BLACK)
+
+        if selected == "resume":
+            text_resume = text_format("RESUME", font, 75, WHITE)
+        else:
+            text_resume = text_format("RESUME", font, 75, BLACK)
+            
+        if selected == "home":
+            text_home = text_format("HOME", font, 75, WHITE)
+        else:
+            text_home = text_format("HOME", font, 75, BLACK)
+            
+        if selected == "quit":
+            text_quit = text_format("QUIT", font, 75, WHITE)
+        else:
+            text_quit = text_format("QUIT", font, 75, BLACK)
+            
+        resume_rect = text_resume.get_rect()
+        home_rect = text_home.get_rect()
+        quit_rect = text_quit.get_rect()
+        
+        # Pause screen Menu Text
+        screen.blit(text_resume, (WIDTH/2 - (resume_rect[2]/2), 260))
+        screen.blit(text_home, (WIDTH/2 - (home_rect[2]/2), 320))
+        screen.blit(text_quit, (WIDTH/2 - (quit_rect[2]/2), 380))
+
+        pygame.display.update()
+        clock.tick(FPS)
+        pygame.display.set_caption("12/25 - Pause Menu")

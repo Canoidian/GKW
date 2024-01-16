@@ -73,13 +73,19 @@ presentsRect = pointText.get_rect(center = (100,100))
 
 # Note: This is an important element in the game, there is a set timer for the amount of time to collect presents
 timerText = textFont.render("#:##", False, WHITE)
-timerRect = timerText.get_rect(center = (500, 50))
+timerRect = timerText.get_rect(center = (1000, 50))
 
+#Sounds
+coin_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/CoinSound.mp3")
+coin_sound.set_volume(.4)
+gold_coin_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/CoinSound.mp3")
+gold_coin_sound.set_volume(1)
 #Music
 mixer.init()
 mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Suite Du Matin.mp3")
 mixer.music.set_volume(.5)
 mixer.music.play()
+
 # Initializing the player
 player = Player(name, speed)
 
@@ -160,13 +166,15 @@ while True:
     # All game states
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
-        mixer.pause()
+        mixer.pause()  #
         mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3")
-        mixer.music.set_volume(1)
+        mixer.music.set_volume(.75)
         mixer.music.play()
-    
+        
     if game_state == "pause":
-        continue
+        game_state = pause(screen, font, WIDTH, clock, game_state)
+        mixer.pause()
+    
     
     if game_state == "game_finished":
         continue
@@ -183,17 +191,10 @@ while True:
         screen.fill((28, 95, 51))
         
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            
             if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        game_state = "pause"
-                        mixer.pause()
-                        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3")
-                        mixer.music.set_volume(1)
-                        mixer.music.play()
+                if event.key == pygame.K_SPACE:
+                    game_state = "pause"
+                    print("Pressed space", game_state)
         
         cameraGroup.update()
         cameraGroup.custom_draw(player)
@@ -202,22 +203,38 @@ while True:
         
         # Displays points and presents collected
         screen.blit(textFont.render(f"Points: {player.points}", False, CHRISTMAS_GREEN), pointsRect)
-        screen.blit(textFont.render(f"Presents Collected: {player.amtOfPresents}/{totalPresents}", False, CHRISTMAS_RED), presentsRect)
+        screen.blit(textFont.render(f"Presents Collected: {player.amtOfPresents}", False, CHRISTMAS_RED), presentsRect)
 
         # Displays timer
-        minutes = timer // 60
-        seconds = timer % 60
+        minutes = int(timer // 60) # Figures out how much time there is
+        seconds = int(timer % 60)
+        if seconds < 10: # For formatting the timer correctly 
+            seconds = "0" + str(int(seconds))
         
-        time = f"{minutes}:{seconds}" # Figures out how much time there is
+        if minutes == 0: # When minutes is 0, it will only show the seconds
+            time = f"{seconds}"
+        else:
+            time = f"{minutes}:{seconds}"
+
         screen.blit(textFont.render(time, False, WHITE), timerRect)
+        timer -= 1 / FPS # Counts down 
 
         # Collisions
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
         
-        for present in presentCollision:
+        for present in presentCollision: # When player touches a present
             player.points += present.getValue()
             player.amtOfPresents += 1
-        
+
+            # Plays sound effect
+            mixer.music.pause()
+            if present.getValue() == 500: # Special sound effect for golden present
+                mixer.Sound.play(gold_coin_sound)
+            else:
+                mixer.Sound.play(coin_sound)
+            mixer.music.unpause()
+            
+            
         blockCollision = pygame.sprite.spritecollide(player, blockGroup, False)
 
         for blockTile in blockCollision: # This will push the player away from the block, which will mimic wall collision 
@@ -234,3 +251,5 @@ while True:
         # Updates screen
         pygame.display.flip()
         clock.tick(FPS)
+    
+    
