@@ -15,8 +15,10 @@
 # https://www.youtube.com/watch?v=abH2MSBdnWc
 #? Libraries
 import pygame, math, random
+from pygame import mixer
 
 from sys import exit
+
 
 from functions import *
 from settings import *
@@ -69,11 +71,20 @@ pointsRect = pointText.get_rect(center = (100,50))
 presentText = textFont.render("Presents Collected: ", False, CHRISTMAS_RED)
 presentsRect = pointText.get_rect(center = (100,100))
 
+# Note: This is an important element in the game, there is a set timer for the amount of time to collect presents
+timerText = textFont.render("#:##", False, WHITE)
+timerRect = timerText.get_rect(center = (500, 50))
+
+#Music
+mixer.init()
+mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Suite Du Matin.mp3")
+mixer.music.set_volume(.5)
+mixer.music.play()
 # Initializing the player
 player = Player(name, speed)
 
 # Load images - background
-background = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Background/Background.png").convert_alpha(), (WIDTH, HEIGHT)) 
+#background = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/Background/BackgroundOrange.png").convert_alpha(), (WIDTH, HEIGHT)) 
 
 #Camera
 class Camera(pygame.sprite.Group):
@@ -85,10 +96,6 @@ class Camera(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
         self.half_w = self.display_surface.get_size()[0] // 2
         self.half_h = self.display_surface.get_size()[1] // 2
-        
-        # Background
-        self.ground_surf = background
-        self.ground_rect = self.ground_surf.get_rect(topleft = (0,0))
     
     def center_target_camera(self, target):
         self.offset.x = target.rect.centerx - self.half_w
@@ -96,10 +103,6 @@ class Camera(pygame.sprite.Group):
     
     def custom_draw(self, player):
         self.center_target_camera(player)
-
-        # Background
-        ground_offset = self.ground_rect.topleft - self.offset
-        self.display_surface.blit(self.ground_surf, ground_offset)
         
         # Active Elements
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
@@ -157,20 +160,40 @@ while True:
     # All game states
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
-        
+        mixer.pause()
+        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3")
+        mixer.music.set_volume(1)
+        mixer.music.play()
+    
     if game_state == "pause":
         continue
     
     if game_state == "game_finished":
         continue
     
-    if game_state == "help":
+    if game_state == "leaderboard":
         continue
+    
+    if game_state == "help_menu":
+        game_state = help_menu(screen, font, WIDTH, clock, game_state)
         
     # The main game state that runs the game
     if game_state == "game":
-        # Fill the screen with black color
-        screen.fill(BLACK)
+        # Background colour
+        screen.fill((28, 95, 51))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            
+            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        game_state = "pause"
+                        mixer.pause()
+                        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3")
+                        mixer.music.set_volume(1)
+                        mixer.music.play()
         
         cameraGroup.update()
         cameraGroup.custom_draw(player)
@@ -180,6 +203,13 @@ while True:
         # Displays points and presents collected
         screen.blit(textFont.render(f"Points: {player.points}", False, CHRISTMAS_GREEN), pointsRect)
         screen.blit(textFont.render(f"Presents Collected: {player.amtOfPresents}/{totalPresents}", False, CHRISTMAS_RED), presentsRect)
+
+        # Displays timer
+        minutes = timer // 60
+        seconds = timer % 60
+        
+        time = f"{minutes}:{seconds}" # Figures out how much time there is
+        screen.blit(textFont.render(time, False, WHITE), timerRect)
 
         # Collisions
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
@@ -192,14 +222,14 @@ while True:
 
         for blockTile in blockCollision: # This will push the player away from the block, which will mimic wall collision 
             if blockTile.pos[0] - player.rect.centerx < 3: # On the X-axis
-                player.rect.centerx += 6
+                player.rect.centerx += player.speed*2
             else:
-                player.rect.centerx -= 6
+                player.rect.centerx -= player.speed*2
                     
             if blockTile.pos[1] - player.rect.centery < 3: # On the Y-axis
-                player.rect.centery += 6
+                player.rect.centery += player.speed*2
             else:
-                player.rect.centery -= 6
+                player.rect.centery -= player.speed*2
 
         # Updates screen
         pygame.display.flip()
