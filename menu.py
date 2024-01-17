@@ -46,6 +46,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
                     
                 if event.key == pygame.K_RETURN:
                     if selected == "start":
+                        timer = defaultTimer # Resets timer to 120 seconds
                         return "game"
                     if selected == "help":
                         return "help_menu"  # Changed from "help" to "help_menu"
@@ -148,9 +149,9 @@ def help_menu(screen, font, WIDTH, clock, game_state):
         text_instructions4 = text_format("Collect as many presents as possible in the time period", font, 50, WHITE)
 
         if selected == "back":
-            text_back = text_format("BACK", font, 75, WHITE)
+            text_back = text_format("BACK", font, 75, CHRISTMAS_RED)
         else:
-            text_back = text_format("BACK", font, 75, BLACK)
+            text_back = text_format("BACK", font, 75, WHITE)
 
         back_rect = text_back.get_rect()
         instructions_rect = text_instructions.get_rect()
@@ -170,7 +171,7 @@ def help_menu(screen, font, WIDTH, clock, game_state):
         pygame.display.set_caption("12/25 - Help Menu")
         
 def pause(screen, font, WIDTH, clock, game_state):
-     # Text Renderer
+    # Text Renderer
     def text_format(message, textFont, textSize, textColor):
         newFont = pygame.font.Font(textFont, textSize)
         newText = newFont.render(message, 0, textColor)
@@ -182,12 +183,13 @@ def pause(screen, font, WIDTH, clock, game_state):
     CHRISTMAS_RED = (214,0,28)
     BLACK = (0,0,0)
     WHITE = (255,255,255)
+    PLUM = (221,160,221)
     
     index = 0
     states = ["resume", "home", "quit"]
     selected = "resume"
     
-    while game_state == "start_menu":
+    while game_state == "pause":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -200,23 +202,23 @@ def pause(screen, font, WIDTH, clock, game_state):
                     if index < 0: # Checks if index is less than 0
                         index = 2
                     selected = states[index]
-                        
+                    
                 elif event.key == pygame.K_DOWN:
                     index += 1
                     if index > len(states) - 1: # Checks if index is greater than the list size
                         index = 0
                     selected = states[index]
-                        
+                    
                 if event.key == pygame.K_RETURN:
                     if selected == "resume":
                         return "game"
                     if selected == "home":
-                        return "main_menu" 
+                        return "start_menu" 
                     if selected == "quit":
                         pygame.quit()
                         quit()
                         
-        screen.fill(BLACK)
+        screen.fill(PLUM)
         
         text_resume = text_format("RESUME", font, 75, BLACK)
         text_home = text_format("HOME", font, 75, BLACK)
@@ -249,3 +251,51 @@ def pause(screen, font, WIDTH, clock, game_state):
         pygame.display.update()
         clock.tick(FPS)
         pygame.display.set_caption("12/25 - Pause Menu")
+        
+def game_over(screen, font, WIDTH, clock, game_state):
+    
+    # Text Renderer
+    def text_format(message, textFont, textSize, textColor):
+        newFont = pygame.font.Font(textFont, textSize)
+        newText = newFont.render(message, 0, textColor)
+
+        return newText
+        
+    #Colours
+    DARK_CHRISTMAS_GREEN = (0,110,51)
+    CHRISTMAS_RED = (214,0,28)
+    BLACK = (0,0,0)
+    WHITE = (255,255,255)
+    
+    index = 0
+    states = ["home", "quit"]
+    selected = "home"
+    
+    while game_state == "game_over":
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                    
+            # Loops through the states in the list
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    index -= 1
+                    
+            if event.key == pygame.K_RETURN:
+                    if selected == "home":
+                        return "start_menu"
+                    if selected == "quit":
+                        pygame.quit()
+                        quit()
+                    
+    pygame.display.update()
+    clock.tick(FPS)
+    pygame.display.set_caption("12/25 - Pause Menu")
+        
+        
+        
+# def leaderboard(screen, font, WIDTH, clock, game_state):
+
+
+

@@ -80,11 +80,9 @@ coin_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/CoinSo
 coin_sound.set_volume(.4)
 gold_coin_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/CoinSound.mp3")
 gold_coin_sound.set_volume(1)
+
 #Music
 mixer.init()
-mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Suite Du Matin.mp3")
-mixer.music.set_volume(.5)
-mixer.music.play()
 
 # Initializing the player
 player = Player(name, speed)
@@ -162,21 +160,21 @@ while True:
         if event.type == pygame.QUIT: # Checks if user clicked the exited button
             pygame.quit()
             exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                game_state = "pause"
         
     # All game states
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
-        mixer.pause()  #
-        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3")
-        mixer.music.set_volume(.75)
+        mixer.pause()
+        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Suite Du Matin.mp3")
+        mixer.music.set_volume(.5)
         mixer.music.play()
-        
     if game_state == "pause":
         game_state = pause(screen, font, WIDTH, clock, game_state)
-        mixer.pause()
-    
-    
-    if game_state == "game_finished":
+        
+    if game_state == "game_over":
         continue
     
     if game_state == "leaderboard":
@@ -189,12 +187,9 @@ while True:
     if game_state == "game":
         # Background colour
         screen.fill((28, 95, 51))
-        
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    game_state = "pause"
-                    print("Pressed space", game_state)
+        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3")
+        mixer.music.set_volume(1)
+        mixer.music.play()
         
         cameraGroup.update()
         cameraGroup.custom_draw(player)
@@ -213,11 +208,15 @@ while True:
         
         if minutes == 0: # When minutes is 0, it will only show the seconds
             time = f"{seconds}"
+            screen.blit(textFont.render(time, False, RED), timerRect)
         else:
             time = f"{minutes}:{seconds}"
+            screen.blit(textFont.render(time, False, WHITE), timerRect)
 
-        screen.blit(textFont.render(time, False, WHITE), timerRect)
-        timer -= 1 / FPS # Counts down 
+        timer -= 1 / FPS # Counts down
+
+        if timer <= 0: # When the timer hits 0
+            exit() # Place holder 
 
         # Collisions
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
@@ -251,5 +250,3 @@ while True:
         # Updates screen
         pygame.display.flip()
         clock.tick(FPS)
-    
-    
