@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/15 11:11:31 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/17 11:32:48 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ class Present(pygame.sprite.Sprite):
                 #print("\nIdentifier found! Returning present value...")
                 return self.value
         
-        print("\nCould not find the identifier at the end! Returning default value...")
+        # print("\nCould not find the identifier at the end! Returning default value...")
         return self.defaultValue
     
     def spawn(self, image, posXY):

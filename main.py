@@ -81,9 +81,6 @@ coin_sound.set_volume(.4)
 gold_coin_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/CoinSound.mp3")
 gold_coin_sound.set_volume(1)
 
-#Music
-mixer.init()
-
 # Initializing the player
 player = Player(name, speed)
 
@@ -153,6 +150,12 @@ cameraGroup.add(player)
 cameraGroup.add(blockGroup)
 cameraGroup.add(presentGroup)
 
+# Start music (menu music)
+mixer.init()
+mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Suite Du Matin.mp3")
+mixer.music.set_volume(.5)
+mixer.music.play()
+
 while True:
     keys = pygame.key.get_pressed() # Looks at all keys pressed
     
@@ -163,35 +166,27 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 game_state = "pause"
-        
+    
     # All game states
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
-        mixer.pause()
-        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Suite Du Matin.mp3")
-        mixer.music.set_volume(.5)
-        mixer.music.play()
+        
     if game_state == "pause":
         game_state = pause(screen, font, WIDTH, clock, game_state)
         
     if game_state == "game_over":
-        continue
-    
-    if game_state == "leaderboard":
-        continue
-    
+        game_state = game_over(screen, font, WIDTH, clock, game_state, player.points, player.amtOfPresents)
+        
     if game_state == "help_menu":
         game_state = help_menu(screen, font, WIDTH, clock, game_state)
         
-    # The main game state that runs the game
+    if game_state == "leaderboard":
+        continue
+        
     if game_state == "game":
         # Background colour
         screen.fill((28, 95, 51))
-        mixer.music.load("/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3")
-        mixer.music.set_volume(1)
-        mixer.music.play()
         
-        cameraGroup.update()
         cameraGroup.custom_draw(player)
 
         player.update() #Updates screen to display player
@@ -202,21 +197,25 @@ while True:
 
         # Displays timer
         minutes = int(timer // 60) # Figures out how much time there is
-        seconds = int(timer % 60)
-        if seconds < 10: # For formatting the timer correctly 
-            seconds = "0" + str(int(seconds))
+        seconds = timer % 60
         
         if minutes == 0: # When minutes is 0, it will only show the seconds
-            time = f"{seconds}"
-            screen.blit(textFont.render(time, False, RED), timerRect)
+            if seconds < 10: # For formatting the seconds correctly
+                time = f"0{round(seconds,2)}"
+            else:
+                time = f"{round(seconds,2)}"
+            screen.blit(textFont.render(time, False, CHRISTMAS_RED), timerRect)
         else:
-            time = f"{minutes}:{seconds}"
+            if seconds < 10:
+                time = f"{minutes}:0{int(seconds)}"
+            else:
+                time = f"{minutes}:{int(seconds)}"
             screen.blit(textFont.render(time, False, WHITE), timerRect)
 
         timer -= 1 / FPS # Counts down
 
         if timer <= 0: # When the timer hits 0
-            exit() # Place holder 
+            game_state = "game_over" # Changes state so it will display the game_over screen
 
         # Collisions
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)

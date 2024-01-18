@@ -1,8 +1,13 @@
-import pygame
+# Libraries
+import pygame, time
+from pygame import mixer
 from main import *
 from settings import *
 from functions import *
 
+# Variables
+mixer.init()
+songs = ["/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3", "/Users/williamisaak/Code/GKW/Asset/Audio/Suite Du Matin.mp3"]
 
 # Main Menu
 def main_menu(screen, font, WIDTH, clock, game_state):
@@ -21,7 +26,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
     WHITE = (255,255,255)
     
     index = 0
-    states = ["start","help", "leaderboard", "quit"]
+    states = ["start", "help", "leaderboard", "quit"]
     selected = "start"
 
     while game_state == "start_menu":
@@ -46,8 +51,14 @@ def main_menu(screen, font, WIDTH, clock, game_state):
                     
                 if event.key == pygame.K_RETURN:
                     if selected == "start":
-                        timer = defaultTimer # Resets timer to 120 seconds
+                        timer = defaultTimer + 50 # Resets timer to 120 seconds
+                        # Plays game music
+                        mixer.music.unload()
+                        mixer.music.load(songs[0])   
+                        mixer.music.set_volume(1) 
+                        mixer.music.play()
                         return "game"
+                    
                     if selected == "help":
                         return "help_menu"  # Changed from "help" to "help_menu"
                     if selected == "leaderboard":
@@ -103,7 +114,7 @@ def main_menu(screen, font, WIDTH, clock, game_state):
         screen.blit(text_quit, (WIDTH/2 - (quit_rect[2]/2), 440))
         pygame.display.update()
         clock.tick(FPS)
-        pygame.display.set_caption("12/25 - Game Menu")
+        pygame.display.set_caption("12/25 - Game")
         
 def help_menu(screen, font, WIDTH, clock, game_state):
     
@@ -121,7 +132,6 @@ def help_menu(screen, font, WIDTH, clock, game_state):
     WHITE = (255,255,255)
     
     index = 0
-    states = ["back"]
     selected = "back"
 
     while game_state == "help_menu":
@@ -130,15 +140,9 @@ def help_menu(screen, font, WIDTH, clock, game_state):
                 pygame.quit()
                 quit()
 
-            # Loops through the states in the list
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                    index = 0
-                    selected = states[index]
-                    
-                if event.key == pygame.K_RETURN:
-                    if selected == "back":
-                        return "start_menu"
+            if event.key == pygame.K_KP_ENTER:
+                if selected == "back":
+                    return "start_menu"
                         
         screen.fill(DARK_CHRISTMAS_GREEN)
 
@@ -213,6 +217,13 @@ def pause(screen, font, WIDTH, clock, game_state):
                     if selected == "resume":
                         return "game"
                     if selected == "home":
+                        # Stops game music and plays menu music
+                        mixer.music.stop()
+                        mixer.music.unload()
+                        mixer.music.load(songs[1])   
+                        mixer.music.set_volume(.5) 
+                        mixer.music.play()
+                        
                         return "start_menu" 
                     if selected == "quit":
                         pygame.quit()
@@ -252,7 +263,7 @@ def pause(screen, font, WIDTH, clock, game_state):
         clock.tick(FPS)
         pygame.display.set_caption("12/25 - Pause Menu")
         
-def game_over(screen, font, WIDTH, clock, game_state):
+def game_over(screen, font, WIDTH, clock, game_state, points, amtOfPresents):
     
     # Text Renderer
     def text_format(message, textFont, textSize, textColor):
@@ -266,11 +277,12 @@ def game_over(screen, font, WIDTH, clock, game_state):
     CHRISTMAS_RED = (214,0,28)
     BLACK = (0,0,0)
     WHITE = (255,255,255)
+    CORN_FLOWER = (100,149,237)
     
     index = 0
     states = ["home", "quit"]
     selected = "home"
-    
+        
     while game_state == "game_over":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -288,14 +300,22 @@ def game_over(screen, font, WIDTH, clock, game_state):
                     if selected == "quit":
                         pygame.quit()
                         quit()
-                    
-    pygame.display.update()
-    clock.tick(FPS)
-    pygame.display.set_caption("12/25 - Pause Menu")
+                        
+        screen.fill(CORN_FLOWER)
         
-        
-        
-# def leaderboard(screen, font, WIDTH, clock, game_state):
+def leaderboard(screen, font, WIDTH, clock, game_state, points, amtOfPresents):
+    
+    # Text Renderer
+    def text_format(message, textFont, textSize, textColor):
+        newFont = pygame.font.Font(textFont, textSize)
+        newText = newFont.render(message, 0, textColor)
 
-
-
+        return newText
+    
+    #Colours
+    DARK_CHRISTMAS_GREEN = (0,110,51)
+    CHRISTMAS_RED = (214,0,28)
+    BLACK = (0,0,0)
+    WHITE = (255,255,255)
+    
+    index = 0
