@@ -3,7 +3,6 @@ import pygame, time
 from pygame import mixer
 from main import *
 from settings import *
-from functions import *
 
 # Variables
 mixer.init()

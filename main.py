@@ -19,8 +19,6 @@ from pygame import mixer
 
 from sys import exit
 
-
-from functions import *
 from settings import *
 from classes import *
 from menu import *
