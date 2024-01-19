@@ -78,6 +78,8 @@ coin_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/CoinSo
 coin_sound.set_volume(.4)
 gold_coin_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/CoinSound.mp3")
 gold_coin_sound.set_volume(1)
+chomp_sound = pygame.mixer.Sound("/Users/williamisaak/Code/GKW/Asset/Audio/Chomp.mp3")
+coin_sound.set_volume(.75)
 
 # Initializing the player
 player = Player(name, speed)
@@ -112,41 +114,46 @@ class Camera(pygame.sprite.Group):
 # Initializing groups
 cameraGroup = Camera()
 presentGroup = pygame.sprite.Group()
+cookiesGroup = pygame.sprite.Group()
 blockGroup = pygame.sprite.Group()
 
 # Tilemap
-defaultSize = 151
+def loadMap():
+    defaultSize = 151
+    presentNames = ["small_present","medium_present","large_present", "golden_present"]
 
-y = 0
-presentNames = ["small_present","medium_present","large_present", "golden_present"]
-totalPresents = 0
-
-for row in tileMap:
-    x = 0
-    for col in row:
-        # Adds in the walls
-        if col == "W":
-            blockGroup.add(block((x,y)))
+    y = 0
+    for row in tileMap:
+        x = 0
+        for col in row:
+            # Adds in the walls
+            if col == "W":
+                blockGroup.add(block((x,y)))
             
-        # Adds in the presents
-        elif col == "P":
-            rndPresent = random.randint(0,2)
-            present = Present(presentNames[rndPresent]+"_"+str(rndPresent))
-            present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/"+presentNames[rndPresent]+".png",(x,y))
-            presentGroup.add(present)
-            totalPresents += 1
-        elif col == "G":
-            present = Present("golden_present_3")
-            present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/golden_present.png",(x,y))
-            presentGroup.add(present)
-            totalPresents += 1
+            elif col == "C":
+                cookie = Cookies("cookies_Milk")
+                cookie.spawn("/Users/williamisaak/Code/GKW/Asset/CookiesAndMilk.png", (x,y))
+                cookiesGroup.add(cookie)
+            # Adds in the presents
+            elif col == "P":
+                rndPresent = random.randint(0,2)
+                present = Present(presentNames[rndPresent]+"_"+str(rndPresent))
+                present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/"+presentNames[rndPresent]+".png",(x,y))
+                presentGroup.add(present)
+            elif col == "G":
+                present = Present("golden_present_3")
+                present.spawn("/Users/williamisaak/Code/GKW/Asset/Presents/golden_present.png",(x,y))
+                presentGroup.add(present)
 
-        x += defaultSize
-    y += defaultSize
+            x += defaultSize
+        y += defaultSize
 
 cameraGroup.add(player)
 cameraGroup.add(blockGroup)
 cameraGroup.add(presentGroup)
+cameraGroup.add(cookiesGroup)
+
+
 
 # Start music (menu music)
 mixer.init()
@@ -155,6 +162,27 @@ mixer.music.set_volume(.5)
 mixer.music.play()
 
 while True:
+    if restart == True:
+        player.points = 0
+        player.amtOfPresents = 0
+        player.speed = 13
+
+        timer = defaultTimer
+        
+        cameraGroup.remove(player)
+        cameraGroup.remove(blockGroup)
+        cameraGroup.remove(presentGroup)
+        cameraGroup.remove(cookiesGroup)
+
+        loadMap()
+        
+        cameraGroup.add(player)
+        cameraGroup.add(blockGroup)
+        cameraGroup.add(presentGroup)
+        cameraGroup.add(cookiesGroup)
+
+        restart = False
+
     keys = pygame.key.get_pressed() # Looks at all keys pressed
     
     for event in pygame.event.get():
@@ -168,6 +196,7 @@ while True:
     # All game states
     if game_state == "start_menu": # When pygame is run, the default value of the game_state is "start_menu" so it will draw out the start menu
         game_state = main_menu(screen, font, WIDTH, clock, game_state)  # Update game_state
+        restart = True
         
     if game_state == "pause":
         game_state = pause(screen, font, WIDTH, clock, game_state)
@@ -247,7 +276,16 @@ while True:
                 player.rect.centery += player.speed*2
             else:
                 player.rect.centery -= player.speed*2
+        
+        cookiesCollision = pygame.sprite.spritecollide(player, cookiesGroup, True)
 
+        for cookie in cookiesCollision: # When player collides with cookies and milk
+            player.speed += 1
+
+            # Plays sound effect
+            mixer.music.pause()
+            mixer.Sound.play(chomp_sound)
+            mixer.music.unpause()
         # Updates screen
         pygame.display.flip()
         clock.tick(FPS)

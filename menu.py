@@ -1,7 +1,6 @@
 # Libraries
 import pygame, time
 from pygame import mixer
-from main import *
 from settings import *
 
 # Variables
@@ -50,7 +49,6 @@ def main_menu(screen, font, WIDTH, clock, game_state):
                     
                 if event.key == pygame.K_RETURN:
                     if selected == "start":
-                        timer = defaultTimer + 50 # Resets timer to 120 seconds
                         # Plays game music
                         mixer.music.unload()
                         mixer.music.load(songs[0])   
@@ -59,10 +57,11 @@ def main_menu(screen, font, WIDTH, clock, game_state):
                         return "game"
                     
                     if selected == "help":
+
                         return "help_menu"  # Changed from "help" to "help_menu"
-                    if selected == "leaderboard":
+                    elif selected == "leaderboard":
                         return "leaderboard"
-                    if selected == "quit":
+                    elif selected == "quit":
                         pygame.quit()
                         quit()
                         
@@ -200,13 +199,13 @@ def pause(screen, font, WIDTH, clock, game_state):
                     
             # Loops through the states in the list
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_w:
                     index -= 1
                     if index < 0: # Checks if index is less than 0
                         index = 2
                     selected = states[index]
                     
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_s:
                     index += 1
                     if index > len(states) - 1: # Checks if index is greater than the list size
                         index = 0
@@ -215,7 +214,7 @@ def pause(screen, font, WIDTH, clock, game_state):
                 if event.key == pygame.K_RETURN:
                     if selected == "resume":
                         return "game"
-                    if selected == "home":
+                    elif selected == "home":
                         # Stops game music and plays menu music
                         mixer.music.stop()
                         mixer.music.unload()
@@ -224,7 +223,7 @@ def pause(screen, font, WIDTH, clock, game_state):
                         mixer.music.play()
                         
                         return "start_menu" 
-                    if selected == "quit":
+                    elif selected == "quit":
                         pygame.quit()
                         quit()
                         
@@ -290,9 +289,9 @@ def game_over(screen, font, WIDTH, clock, game_state, points, amtOfPresents):
                     
             # Loops through the states in the list
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_w:
                     index -= 1
-                if event.key == pygame.K_DOWN:  # Check for the Down key
+                if event.key == pygame.K_s:  # Check for the Down key
                     index += 1  # Increment the index
                     
                 if index < 0:  # Check if index is less than 0
@@ -305,7 +304,7 @@ def game_over(screen, font, WIDTH, clock, game_state, points, amtOfPresents):
                 if event.key == pygame.K_RETURN:  # Check for the Enter key
                     if selected == "home":
                         return "start_menu"
-                    if selected == "quit":
+                    elif selected == "quit":
                         pygame.quit()
                         quit()
                         

@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:36:53 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/18 22:38:32 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/19 11:26:55 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ FPS = 60
 PLAYER_START_X = 300
 PLAYER_START_Y = 300
 
-speed = 13 # Default speed
+speed = 10 # Default speed
 name = "Will I am" # Default name
 
 
@@ -33,5 +33,6 @@ defaultInvSize = 5
 presentValues = [30,50,100,500]
 
 # Game Settings
-defaultTimer = 180
+defaultTimer = 10
 timer = defaultTimer # in seconds
+restart = True

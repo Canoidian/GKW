@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/18 21:45:46 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/19 11:29:47 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,4 +117,16 @@ class block(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/GrassBlock.png").convert_alpha(), (150,150))
         self.rect = self.image.get_rect(center = self.pos)
 
-
+class Cookies(pygame.sprite.Sprite):
+    def __init__(self, name):
+        super().__init__()
+        self.name = name
+        
+        self.image = pygame.transform.scale(pygame.image.load("/Users/williamisaak/Code/GKW/Asset/CookiesAndMilk.png").convert_alpha(), (100,100)) # Base image
+        self.pos = pygame.math.Vector2()
+        self.rect = self.image.get_rect(center = self.pos)
+    
+    def spawn(self, image, posXY):
+        self.pos = posXY
+        self.image = pygame.transform.scale2x(pygame.image.load(image).convert_alpha())
+        self.rect = self.image.get_rect(center = self.pos)
