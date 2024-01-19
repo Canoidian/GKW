@@ -181,7 +181,7 @@ while True:
         game_state = help_menu(screen, font, WIDTH, clock, game_state)
         
     if game_state == "leaderboard":
-        continue
+        game_state = leaderboard(screen, font, WIDTH, clock, game_state)
         
     if game_state == "game":
         # Background colour
@@ -215,8 +215,12 @@ while True:
         timer -= 1 / FPS # Counts down
 
         if timer <= 0: # When the timer hits 0
+            with open('points_presents.txt', 'a') as file:
+                file.write(f"\nPoints: {player.points}\n")
+                file.write(f"Presents Collected: {player.amtOfPresents}\n")
             game_state = "game_over" # Changes state so it will display the game_over screen
-
+            timer = defaultTimer  # Reset the timer to the default value to prevent crashing
+        
         # Collisions
         presentCollision = pygame.sprite.spritecollide(player, presentGroup, True)
         
