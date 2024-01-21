@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:36:53 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/19 11:26:55 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/21 13:42:38 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,6 @@ defaultInvSize = 5
 presentValues = [30,50,100,500]
 
 # Game Settings
-defaultTimer = 10
+defaultTimer = 180
 timer = defaultTimer # in seconds
 restart = True

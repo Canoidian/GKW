@@ -6,7 +6,7 @@
 #    By: williamisaak <williamisaak@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/19 11:29:47 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/21 13:55:03 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,26 +88,32 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
+        moving = False  # Add a flag to track movement
         if keys[pygame.K_w]:
             self.rect.centery -= self.speed
             self.walkingSprites.animate(0.07, self)
+            moving = True  # Set the flag to True when moving up
         if keys[pygame.K_a]:
             self.rect.centerx -= self.speed
             self.walkingSprites.animate(0.07, self)
-            self.direction = "left" # Update direction
+            self.direction = "left"  # Update direction
+            moving = True  # Set the flag to True when moving left
         if keys[pygame.K_s]:
             self.rect.centery += self.speed
             self.walkingSprites.animate(0.07, self)
+            moving = True  # Set the flag to True when moving down
         if keys[pygame.K_d]:
             self.rect.centerx += self.speed
             self.walkingSprites.animate(0.07, self)
-            self.direction = "right" # Update direction
+            self.direction = "right"  # Update direction
+            moving = True  # Set the flag to True when moving right
 
-        # Flip the image based on direction
-        if self.direction == "left":
-            self.image = pygame.transform.flip(self.image, True, False)
-        elif self.direction == "right":
-            self.image = pygame.transform.flip(self.image, False, False)
+        # Flip the image based on direction and movement
+        if moving:  # Only flip the image if the character is moving
+            if self.direction == "left":
+                self.image = pygame.transform.flip(self.image, True, False)
+            elif self.direction == "right":
+                self.image = pygame.transform.flip(self.image, False, False)
 
 class block(pygame.sprite.Sprite):
     def __init__(self, pos):

@@ -57,15 +57,13 @@ def main_menu(screen, font, WIDTH, clock, game_state):
                         return "game"
                     
                     if selected == "help":
-
                         return "help_menu"  # Changed from "help" to "help_menu"
                     elif selected == "leaderboard":
                         return "leaderboard"
                     elif selected == "quit":
                         pygame.quit()
                         quit()
-                        
-                        
+                          
         # Main Menu Screen
         screen.fill(CHRISTMAS_GREEN)
         
@@ -192,6 +190,7 @@ def pause(screen, font, WIDTH, clock, game_state):
     selected = "resume"
     
     while game_state == "pause":
+        mixer.music.set_volume(.1)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -369,13 +368,15 @@ def leaderboard(screen, font, WIDTH, clock, game_state):
                         
         screen.fill(CHRISTMAS_RED)
         
-        text_back = text_format("BACK", font, 75, CHRISTMAS_RED)
+        text_back = text_format("BACK", font, 75, BLACK)
         text_leaderboard = text_format("LEADERBOARD", font, 80, WHITE)
-
-                
-        screen.blit(text_back, (WIDTH/2 - (text_back.get_rect()[2]/2), 200))  # Show the "BACK" text
-        screen.blit(text_leaderboard, (WIDTH/2 - (text_leaderboard.get_rect()[2]/2), 100))  # Show the "LEADERBOARD" text
-
+        
+        leaderboard_rect = text_leaderboard.get_rect()
+        back_rect = text_back.get_rect()
+        
+        screen.blit(text_leaderboard, (WIDTH/2 - (leaderboard_rect[2]/2), 100))  # Show the "LEADERBOARD" text
+        screen.blit(text_back, (WIDTH/2 - (back_rect[2]/2), 600))
+        
         pygame.display.update()
         clock.tick(FPS)
         pygame.display.set_caption("12/25 - Leaderboard")
