@@ -9,10 +9,6 @@
 #    Updated: 2023/12/20 11:11:250 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
-
-# YT video to help us out
-# https://www.youtube.com/watch?v=OUOI6iCrmCk&ab_channel=JCode
-# https://www.youtube.com/watch?v=abH2MSBdnWc
 #? Libraries
 import pygame, random
 from pygame import mixer
@@ -23,7 +19,6 @@ from settings import *
 from classes import *
 from menu import *
 from map import *
-
 
 #* Constants and Variables
 
@@ -148,10 +143,23 @@ def loadMap():
             x += defaultSize
         y += defaultSize
 
-cameraGroup.add(player)
-cameraGroup.add(blockGroup)
-cameraGroup.add(presentGroup)
-cameraGroup.add(cookiesGroup)
+def restart():
+    player.points = 0
+    player.amtOfPresents = 0
+    player.speed = 13
+    player.rect = player.image.get_rect(center = player.pos)
+        
+    cameraGroup.remove(player)
+    cameraGroup.remove(blockGroup)
+    cameraGroup.remove(presentGroup)
+    cameraGroup.remove(cookiesGroup)
+
+    loadMap()
+        
+    cameraGroup.add(player)
+    cameraGroup.add(blockGroup)
+    cameraGroup.add(presentGroup)
+    cameraGroup.add(cookiesGroup)
 
 # Start music (menu music)
 mixer.init()
@@ -160,27 +168,6 @@ mixer.music.set_volume(.5)
 mixer.music.play()
 
 while True:
-    if restart == True:
-        player.points = 0
-        player.amtOfPresents = 0
-        player.speed = 13
-
-        timer = defaultTimer
-        
-        cameraGroup.remove(player)
-        cameraGroup.remove(blockGroup)
-        cameraGroup.remove(presentGroup)
-        cameraGroup.remove(cookiesGroup)
-
-        loadMap()
-        
-        cameraGroup.add(player)
-        cameraGroup.add(blockGroup)
-        cameraGroup.add(presentGroup)
-        cameraGroup.add(cookiesGroup)
-
-        restart = False
-
     keys = pygame.key.get_pressed() # Looks at all keys pressed
     
     for event in pygame.event.get():
@@ -194,20 +181,23 @@ while True:
     # All game states 
     if game_state == "start_menu":
         game_state = main_menu(screen, font, WIDTH, clock, game_state)
+        # Restarts game elements
+        timer = defaultTimer
+        restart()
         
-    if game_state == "pause":
+    elif game_state == "pause":
         game_state = pause(screen, font, WIDTH, clock, game_state)
         
-    if game_state == "game_over":
+    elif game_state == "game_over":
         game_state = game_over(screen, font, WIDTH, clock, game_state, player.points, player.amtOfPresents)
         
-    if game_state == "help_menu":
+    elif game_state == "help_menu":
         game_state = help_menu(screen, font, WIDTH, clock, game_state)
         
-    if game_state == "leaderboard":
+    elif game_state == "leaderboard":
         game_state = leaderboard(screen, font, WIDTH, clock, game_state)
         
-    if game_state == "game":
+    elif game_state == "game":
         # Background colour
         screen.fill((28, 95, 51))
         
@@ -240,8 +230,8 @@ while True:
 
         if timer <= 0: # When the timer hits 0
             with open('points_presents.txt', 'a') as file:
-                file.write(f"\nPoints: {player.points}\n")
-                file.write(f"Presents Collected: {player.amtOfPresents}\n")
+                file.write(f"Points: {player.points}\n")
+                file.write(f"Presents Collected: {player.amtOfPresents}\n\n")
             game_state = "game_over" # Changes state so it will display the game_over screen
             timer = defaultTimer  # Reset the timer to the default value to prevent crashing
         
@@ -264,12 +254,12 @@ while True:
         blockCollision = pygame.sprite.spritecollide(player, blockGroup, False)
 
         for blockTile in blockCollision: # This will push the player away from the block, which will mimic wall collision 
-            if blockTile.pos[0] - player.rect.centerx < 3: # On the X-axis
+            if blockTile.pos[0] - player.rect.centerx < 2: # On the X-axis
                 player.rect.centerx += player.speed*2
             else:
                 player.rect.centerx -= player.speed*2
                     
-            if blockTile.pos[1] - player.rect.centery < 3: # On the Y-axis
+            if blockTile.pos[1] - player.rect.centery < 2: # On the Y-axis
                 player.rect.centery += player.speed*2
             else:
                 player.rect.centery -= player.speed*2
@@ -283,6 +273,7 @@ while True:
             mixer.music.pause()
             mixer.Sound.play(chomp_sound)
             mixer.music.unpause()
+            
         # Updates screen
         pygame.display.flip()
         clock.tick(FPS)

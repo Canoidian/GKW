@@ -3,10 +3,10 @@
 #                                                         ::::::::             #
 #    settings.py                                        :+:    :+:             #
 #                                                      +:+                     #
-#    By: williamisaak <williamisaak@student.coda      +#+                      #
+#    By: Kevin Nhan <kenha4996@ugcloud.ca>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/12/19 10:36:53 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/21 13:42:38 by williamisaa   ########   odam.nl          #
+#    Updated: 2024/01/21 20:16:24 by williamisaa   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,11 +26,8 @@ PLAYER_START_Y = 300
 speed = 10 # Default speed
 name = "Will I am" # Default name
 
-
-defaultInvSize = 5
-
 # Present Settings
-presentValues = [30,50,100,500]
+presentValues = [100,150,300,500]
 
 # Game Settings
 defaultTimer = 180

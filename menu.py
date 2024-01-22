@@ -11,7 +11,9 @@ songs = ["/Users/williamisaak/Code/GKW/Asset/Audio/Spy Exposed.mp3", "/Users/wil
 def main_menu(screen, font, WIDTH, clock, game_state):
     
     # Text Renderer
-    def text_format(message, textFont, textSize, textColor):
+    # Displays the main menu and handles user input.
+    def text_format(message, textFont, textSize, textColor): 
+        # Renders text with a given font, size, and color.
         newFont = pygame.font.Font(textFont, textSize)
         newText = newFont.render(message, 0, textColor)
 
@@ -341,20 +343,74 @@ def game_over(screen, font, WIDTH, clock, game_state, points, amtOfPresents):
         pygame.display.set_caption("12/25 - Game Over")
         
 def leaderboard(screen, font, WIDTH, clock, game_state):
+    #Colours
+    DARK_CHRISTMAS_GREEN = (0,110,51)
+    CHRISTMAS_RED = (214,0,28)
+    BLACK = (0,0,0)
+    WHITE = (255,255,255)
+    YELLOW = (255,240,0)
+    SLIVER = (192,192,192)
+    BRONZE = (169,113,66)
+    
     # Text Renderer
     def text_format(message, textFont, textSize, textColor):
         newFont = pygame.font.Font(textFont, textSize)
         newText = newFont.render(message, 0, textColor)
         return newText
     
-    #Colours
-    DARK_CHRISTMAS_GREEN = (0,110,51)
-    CHRISTMAS_RED = (214,0,28)
-    BLACK = (0,0,0)
-    WHITE = (255,255,255)
-    
-    states = ["back"]
-    selected = "back"
+    def topThreeScores():
+        scores = []
+        
+        points = []
+        highestPoints = 0
+        secondHighestPoints = 0
+        thirdHighestPoints = 0
+        
+        presents = []
+        highestPresents = 0
+        secondHighestPresents = 0
+        thirdHighestPresents = 0
+        
+        saveFile = open("points_presents.txt", "r") # Reads the save file
+        lengthOfFile = saveFile.readlines()
+        
+        if int(len(lengthOfFile)) >= 9: # If the save file does not have less than 9 lines (3 scores have to be set in order for the leaderboard to show the top three scores)
+            saveFile = open("points_presents.txt", "r") # Reads the file again because it has already read the file in the if statement
+            lines = saveFile.readlines()
+            # Reading each line in the save file
+            for line in lines:
+                if line[0:7] == "Points:": # If the line read is points
+                    pointValue = int(line[8:-1])
+                    
+                    if pointValue > highestPoints: # Checking if the end of the line (total points) is higher than the highestPoints variable
+                        secondHighestPoints = highestPoints
+                        highestPoints = pointValue # It will keep changing every time there is a new highest
+                    elif pointValue > secondHighestPoints:
+                        thirdHighestPoints = secondHighestPoints
+                        secondHighestPoints = pointValue
+                        
+                        points = [highestPoints, secondHighestPoints, thirdHighestPoints] # Put into a list so it is more simple and understandable later on in the code
+                elif line[0:7] == "Present": # If the line read is presents
+                    presentValue = int(line[20:-1])
+                    
+                    if presentValue > highestPresents: # Same concepts apply here
+                        secondHighestPresents = highestPresents
+                        highestPresents = presentValue
+                    elif presentValue > secondHighestPresents:
+                        thirdHighestPresents = secondHighestPresents
+                        secondHighestPresents = presentValue
+                        presents = [highestPresents, secondHighestPresents, thirdHighestPresents]
+
+            # Creating the text for the top 3 best scores and adding them to the scores list
+            scores.append(text_format("{0:5} {1:5} {2}".format("Ranking", "Points", "Presents Collected"), font, 80, WHITE))
+            scores.append(text_format("1st {0:5} {1:5}".format(points[0], presents[0]), font, 80, YELLOW))
+            scores.append(text_format("2nd {0:5} {1:5}".format(points[1], presents[1]), font, 80, SLIVER))
+            scores.append(text_format("3rd {0:5} {1:5}".format(points[2], presents[2]), font, 80, BRONZE))
+
+        else: # If the save file has less than 9 lines
+            scores.append(text_format("Not enough Scores have been set!", font, 80, WHITE))
+            
+        return scores
     
     while game_state == "leaderboard":
         for event in pygame.event.get():
@@ -373,6 +429,12 @@ def leaderboard(screen, font, WIDTH, clock, game_state):
         
         leaderboard_rect = text_leaderboard.get_rect()
         back_rect = text_back.get_rect()
+        
+        offset = 300
+        for score in topThreeScores(): # Draws out the top three scores
+            score_rect = score.get_rect()
+            screen.blit(score, (WIDTH/2 - (score_rect[2]/2), offset))
+            offset += score_rect[3] + 10  # Adjust the offset to space the scores properly
         
         screen.blit(text_leaderboard, (WIDTH/2 - (leaderboard_rect[2]/2), 100))  # Show the "LEADERBOARD" text
         screen.blit(text_back, (WIDTH/2 - (back_rect[2]/2), 600))

@@ -1,51 +1,10 @@
-
-Points: 210
+Points: 3300
 Presents Collected: 4
 
-Points: 160
-Presents Collected: 4
-
-Points: 30
-Presents Collected: 1
-
-Points: 50
-Presents Collected: 1
-
-Points: 200
-Presents Collected: 4
-
-Points: 160
-Presents Collected: 4
-
-Points: 140
-Presents Collected: 4
-
-Points: 170
-Presents Collected: 5
-
-Points: 60
+Points: 600
+Presents Collected: 2Points: 1000
 Presents Collected: 2
 
-Points: 380
-Presents Collected: 6
+Points: 38600
+Presents Collected: 36
 
-Points: 250
-Presents Collected: 3
-
-Points: 30
-Presents Collected: 1
-
-Points: 50
-Presents Collected: 1
-
-Points: 340
-Presents Collected: 6
-
-Points: 360
-Presents Collected: 6
-
-Points: 340
-Presents Collected: 6
-
-Points: 30
-Presents Collected: 1

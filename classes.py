@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    classes.py                                         :+:    :+:             #
-#                                                      +:+                     #
-#    By: williamisaak <williamisaak@student.coda      +#+                      #
-#                                                    +#+                       #
-#    Created: 2023/12/19 10:38:16 by williamisaa   #+#    #+#                  #
-#    Updated: 2024/01/21 13:55:03 by williamisaa   ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    classes.py                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: Kevin Nhan <kenha4996@ugcloud.ca>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/19 10:38:16 by williamisaa       #+#    #+#              #
+#    Updated: 2024/01/21 20:07:27 by Kevin Nhan       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,3 +136,4 @@ class Cookies(pygame.sprite.Sprite):
         self.pos = posXY
         self.image = pygame.transform.scale2x(pygame.image.load(image).convert_alpha())
         self.rect = self.image.get_rect(center = self.pos)
+
